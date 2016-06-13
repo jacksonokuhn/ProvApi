@@ -11,45 +11,110 @@ package provapi;
  */
 import java.util.Map;
 import CPL;
+import java.time.LocalDateTime;
+import java.util.HashMap;
         
 public class ProvApi {
 
     private static Map<String, String> NAMESPACES;
-    
     protected String[] args;
+    private String originator;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         
         CPL.attachODBC("DSN=CPL");
+        ProvApi.NAMESPACES = new HashMap();
     }
     
-    public addNamespace(String key, String value){
+    public void addNamespace(String key, String value){
         
             NAMESPACES.put(key, value);
+            
     }
 
-    public removeNamespace(String key){
+    public void removeNamespace(String key){
         
             NAMESPACES.remove(key);
     }
-    
-    public entity(){
+
+   public CPLObject entity(String identifier){
         
-    }
-    
-    public activity(){
-    
-    }
-    
-    public agent(){
-    
-    }
-    
-    public attributeValuePair(){
+        CPLObject obj1 = CPLObject.create(this.originator, identifier, "entity", null);
         
+        return obj1;
     }
+   
+    public CPLObject entity(String identifier, HashMap attributes){
+        
+        CPLObject obj1 = CPLObject.create(this.originator, identifier, "entity", null);
+        
+        attributes.forEach( (k,v) -> obj1.addProperty(k.toString(), v.toString()));
+        
+        return obj1;
+    }   
+    
+    public CPLObject activity(String identifier){
+        
+        CPLObject obj1 = CPLObject.create(this.originator, identifier, "activity", null);
+        
+        return obj1;
+    }
+    
+    public CPLObject activity(String identifier, HashMap attributes){
+        
+        CPLObject obj1 = CPLObject.create(this.originator, identifier, "activity", null);
+        
+        attributes.forEach( (k,v) -> obj1.addProperty(k.toString(), v.toString()));
+
+        return obj1;
+    }
+    
+    public CPLObject activity(String identifier, LocalDateTime start, LocalDateTime end){
+        
+        CPLObject obj1 = CPLObject.create(this.originator, "activity", null);
+        
+        if(start != null){
+            obj1.addProperty("startTime", start);
+        }
+        if(end != null){
+            obj1.addProperty("endTime", end);
+        }
+        
+        return obj1;
+    }
+    
+    public CPLObject activity(String identifier, LocalDateTime start, LocalDateTime end, HashMap attributes){
+        
+        CPLObject obj1 = CPLObject.create(this.originator, "activity", null);
+        
+        if(start != null){
+            obj1.addProperty("startTime", start);
+        }
+        if(end != null){
+            obj1.addProperty("endTime", end);
+        }
+        attributes.forEach( (k,v) -> obj1.addProperty(k.toString(), v.toString()));
+        
+        return obj1;
+    }
+    
+   public CPLObject agent(String identifier){
+        
+        CPLObject obj1 = CPLObject.create(this.originator, identifier, "agent", null);
+        
+        return obj1;
+    }
+   
+    public CPLObject agent(String identifier, HashMap attributes){
+        
+        CPLObject obj1 = CPLObject.create(this.originator, identifier, "agent", null);
+        
+        attributes.forEach( (k,v) -> obj1.addProperty(k.toString(), v.toString()));
+        
+        return obj1;
+    }   
     
     public wasGeneratedBy(){
     
