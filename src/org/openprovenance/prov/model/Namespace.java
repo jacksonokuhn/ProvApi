@@ -174,7 +174,7 @@ public class Namespace  {
 	 }
      }
      
-     public void unregisterDeafult(String namespace) {
+     public void unregisterDefault(String namespace) {
 	 String val=getDefaultNamespace();
 	 if (val!=null){
 	     if (val.equals(namespace)) {

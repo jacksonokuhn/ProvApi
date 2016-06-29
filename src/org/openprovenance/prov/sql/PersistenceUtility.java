@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Properties;
 
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.openprovenance.prov.model.QualifiedName;
 import org.openprovenance.prov.model.ProvUtilities;
+import org.openprovenance.prov.model.StatementOrBundle;
 
 public class PersistenceUtility {
     static Logger logger = Logger.getLogger(PersistenceUtility.class);
@@ -175,6 +177,24 @@ public class PersistenceUtility {
      
     }            
     
+    public List<StatementOrBundle> persist(List<StatementOrBundle> SoB) {
+        try{
+            beginTransaction();
+            Dagify dagifier = new Dagify(entityManager, table);
+            ProvUtilities u = new ProvUtilities();
+            u.forAllStatementOrBundle(SoB, dagifier);
+            entityManager.persist(SoB);
+            
+            return SoB;
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+            return null;
+        }
+        finally {
+            commitTransaction();
+        }
+    }
+            
 
     public Document persistInTransaction(Document doc) {
 	try {
